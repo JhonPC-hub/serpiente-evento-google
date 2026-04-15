@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-pixel: "Press Start 2P", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --color-glitch-cyan: #00ffff;
+  --color-glitch-magenta: #ff00ff;
+  --color-glitch-bg: #050505;
+}
+
+@layer base {
+  body {
+    @apply bg-glitch-bg text-white antialiased overflow-hidden h-screen w-screen font-mono;
+    background-image: 
+      repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+  }
+}
+
+@layer components {
+  .glitch-panel {
+    @apply bg-black/40 border-2 border-glitch-cyan/50 p-4 relative overflow-hidden;
+    box-shadow: -4px 0 0 #ff00ff, 4px 0 0 #00ffff;
+  }
+
+  .glitch-text {
+    @apply font-pixel text-[10px] uppercase tracking-tighter;
+    text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff;
+    animation: glitch-skew 4s infinite linear alternate-reverse;
+  }
+
+  .glitch-btn {
+    @apply border-2 border-glitch-cyan px-4 py-2 font-pixel text-[8px] uppercase transition-all relative;
+    &:hover {
+      @apply bg-glitch-magenta text-black border-glitch-magenta;
+      box-shadow: 0 0 15px #ff00ff;
+    }
+  }
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  20% { transform: skew(0deg); }
+  21% { transform: skew(10deg); }
+  22% { transform: skew(-10deg); }
+  23% { transform: skew(0deg); }
+  100% { transform: skew(0deg); }
+}
+
+@keyframes noise {
+  0% { transform: translate(0,0) }
+  10% { transform: translate(-5%,-5%) }
+  20% { transform: translate(-10%,5%) }
+  30% { transform: translate(5%,-10%) }
+  40% { transform: translate(-5%,15%) }
+  50% { transform: translate(-10%,5%) }
+  60% { transform: translate(15%,0) }
+  70% { transform: translate(0,10%) }
+  80% { transform: translate(-15%,0) }
+  90% { transform: translate(10%,5%) }
+  100% { transform: translate(5%,0) }
+}
+
+.noise-overlay {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background: transparent url('http://assets.iceablethemes.com/img/noise-transparent.png') repeat;
+  animation: noise .2s infinite;
+  opacity: .05;
+  pointer-events: none;
+  z-index: 999;
+}
